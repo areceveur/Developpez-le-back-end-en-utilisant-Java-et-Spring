@@ -8,6 +8,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,22 +23,26 @@ import org.springframework.security.web.SecurityFilterChain;
 import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
+@EnableWebSecurity
 public class SpringSecurityConfig {
 
-  private String jwtKey = "q2RtgQCxZ4E7Iz++7/eYm3ew5nyAHFPD72jekQXKuqS0Lj+zoHMdcdhwwlxn2BHJ";
+  private final String jwtKey = "q2RtgQCxZ4E7Iz++7/eYm3ew5nyAHFPD72jekQXKuqS0Lj+zoHMdcdhwwlxn2BHJ";
 
   @Autowired
   private CustomUserDetailsService customUserDetailsService;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    return http.csrf(csrf -> csrf.disable())
+    return http.csrf(AbstractHttpConfigurer::disable)
       .sessionManagement(session ->
         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-      .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/api/auth/register").permitAll()
-        .anyRequest().authenticated())
-      .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
+      .authorizeHttpRequests(auth -> {
+        auth.requestMatchers("/admin").hasRole("admin");
+        auth.requestMatchers("/user").hasRole("user");
+        auth.anyRequest().authenticated();
+      })
+      .formLogin(Customizer.withDefaults())
+      .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
       .httpBasic(Customizer.withDefaults()).build();
   }
 

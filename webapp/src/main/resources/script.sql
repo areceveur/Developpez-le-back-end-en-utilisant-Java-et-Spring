@@ -1,10 +1,11 @@
 CREATE TABLE `USERS` (
                        `id` integer PRIMARY KEY AUTO_INCREMENT,
                        `email` varchar(255),
-                       `name` varchar(255),
+                       `username` varchar(255),
                        `password` varchar(255),
                        `created_at` timestamp,
-                       `updated_at` timestamp
+                       `updated_at` timestamp,
+                       `role` varchar(255)
 );
 
 CREATE TABLE `RENTALS` (
@@ -35,3 +36,5 @@ ALTER TABLE `USERS` ADD FOREIGN KEY (`id`) REFERENCES `RENTALS` (`owner_id`);
 ALTER TABLE `USERS` ADD FOREIGN KEY (`id`) REFERENCES `MESSAGES` (`user_id`);
 
 ALTER TABLE `RENTALS` ADD FOREIGN KEY (`id`) REFERENCES `MESSAGES` (`rental_id`);
+
+INSERT INTO USERS ("email", "username", "password", "created_at", "updated_at", "role") VALUES ( 'user@test.com', 'user', 'user', '24/06/2024', '02/07/2024','user' );
