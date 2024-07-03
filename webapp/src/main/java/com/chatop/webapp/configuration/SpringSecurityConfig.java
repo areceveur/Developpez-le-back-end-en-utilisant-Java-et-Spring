@@ -37,6 +37,7 @@ public class SpringSecurityConfig {
       .sessionManagement(session ->
         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth -> {
+        auth.requestMatchers("/register", "/login").permitAll();
         auth.requestMatchers("/admin").hasRole("admin");
         auth.requestMatchers("/user").hasRole("user");
         auth.anyRequest().authenticated();
@@ -53,7 +54,7 @@ public class SpringSecurityConfig {
 
   @Bean
   public JwtDecoder jwtDecoder() {
-    SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length, "RSA");
+    SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length, "HmacSHA256");
     return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
   }
 

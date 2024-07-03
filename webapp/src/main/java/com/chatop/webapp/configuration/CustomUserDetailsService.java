@@ -3,6 +3,7 @@ package com.chatop.webapp.configuration;
 import com.chatop.webapp.model.DBUser;
 import com.chatop.webapp.repository.DBUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Primary
 public class CustomUserDetailsService implements UserDetailsService {
   @Autowired
   private DBUserRepository dbUserRepository;

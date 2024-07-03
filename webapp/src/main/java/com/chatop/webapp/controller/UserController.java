@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/api/auth")
 public class UserController {
 
   @Autowired
@@ -16,8 +17,8 @@ public class UserController {
 
   // Enregistrement d'un premier utilisateur
   @PostMapping("/register")
-  public DBUser register(@RequestBody DBUser register) {
-    return userService.saveUser(register);
+  public DBUser register(@RequestBody DBUser dbUser) {
+    return userService.saveUser(dbUser);
   }
 
   // Login de l'utilisateur
@@ -27,8 +28,8 @@ public class UserController {
   }
 
   @PutMapping("/user/{id}")
-  public DBUser updateUser(@PathVariable("id") long id, @RequestBody DBUser dbUser) {
-    Optional<DBUser> u = UserService.getUser(id);
+  public DBUser updateUser(@PathVariable("id") final int id, @RequestBody DBUser dbUser) {
+    Optional<DBUser> u = userService.getUser(id);
     if (u.isPresent()) {
       DBUser currentUser = u.get();
 
@@ -47,21 +48,21 @@ public class UserController {
         currentUser.setPassword(password);
       }
 
-      Date created_at = dbUser.getCreate_at();
+      Date created_at = dbUser.getCreated_at();
       if(created_at != null) {
-        currentUser.setCreate_at(created_at);
+        currentUser.setCreated_at(created_at);
       }
 
-      Date updated_at = dbUser.getUpdate_at();
+      Date updated_at = dbUser.getUpdated_at();
       if(updated_at != null) {
-        currentUser.setUpdate_at(updated_at);
+        currentUser.setUpdated_at(updated_at);
       }
 
       String role = dbUser.getRole();
       if(role != null) {
         currentUser.setRole(role);
       }
-      UserService.saveUser(currentUser);
+      userService.saveUser(currentUser);
       return currentUser;
     } else {
       return null;
@@ -69,7 +70,7 @@ public class UserController {
   }
 
   @DeleteMapping("/user/{id}")
-  public void deleteUser(@PathVariable("id") long id) {
-    UserService.deleteUser(id);
+  public void deleteUser(@PathVariable("id") int id) {
+    userService.deleteUser(id);
   }
 }

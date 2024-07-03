@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/api/rentals")
 public class RentalController {
   @Autowired
   private RentalService rentalService;
@@ -21,19 +22,19 @@ public class RentalController {
 
   // récupère une location en particulier
   @GetMapping("/oneRental/{id}")
-  public DBRental getRental(@PathVariable("id") final Long id) {
-    Optional<DBRental> dbRental = RentalService.getRental(id);
+  public DBRental getRental(@PathVariable("id") final int id) {
+    Optional<DBRental> dbRental = rentalService.getRental(id);
     return dbRental.orElse(null);
   }
 
   @PostMapping("/createRental")
   public DBRental createRental(@RequestBody final DBRental dbRental) {
-    return RentalService.saveRental(dbRental);
+    return rentalService.saveRental(dbRental);
   }
 
   @PostMapping("/oneRental/{id}")
-  public DBRental updateRental(@PathVariable("id") final Long id, @RequestBody final DBRental dbRental) {
-    Optional<DBRental> r = RentalService.getRental(id);
+  public DBRental updateRental(@PathVariable("id") final int id, @RequestBody final DBRental dbRental) {
+    Optional<DBRental> r = rentalService.getRental(id);
     if(r.isPresent()) {
       DBRental currentRental = r.get();
 
@@ -72,11 +73,11 @@ public class RentalController {
         currentRental.setCreated_date(created_date);
       }
 
-      Date updated_date = dbRental.getUpdate_date();
+      Date updated_date = dbRental.getUpdated_date();
       if(updated_date != null) {
-        currentRental.setUpdate_date(updated_date);
+        currentRental.setUpdated_date(updated_date);
       }
-      RentalService.saveRental(currentRental);
+      rentalService.saveRental(currentRental);
       return currentRental;
     } else {
       return null;
@@ -85,7 +86,7 @@ public class RentalController {
 
   // Suppression du rental
   @DeleteMapping("/oneRental/{id}")
-  public void deleteRental(@PathVariable("id") final Long id) {
-    RentalService.deleteRental(id);
+  public void deleteRental(@PathVariable("id") final int id) {
+    rentalService.deleteRental(id);
   }
 }

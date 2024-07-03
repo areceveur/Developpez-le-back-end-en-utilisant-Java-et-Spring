@@ -12,17 +12,17 @@ import java.util.Optional;
 @Service
 public class UserService {
   @Autowired
-  private static UserRepository userRepository;
+  private UserRepository userRepository;
 
-  public static DBUser saveUser(DBUser register) {
-    return userRepository.save(register);
+  public DBUser saveUser(DBUser dbUser) {
+    return userRepository.save(dbUser);
   }
 
-  public static Optional<DBUser> getUser(final Long id) {
+  public Optional<DBUser> getUser(final int id) {
     return userRepository.findById(id);
   }
 
-  public static void deleteUser(final Long id) {
+  public void deleteUser(final int id) {
     userRepository.deleteById(id);
   }
 }

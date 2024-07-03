@@ -19,7 +19,7 @@ public class DBRental {
   private String description;
   private int id_owner;
   private Date created_date;
-  private Date update_date;
+  private Date updated_date;
 
   public int getId() {
     return id;
@@ -85,11 +85,11 @@ public class DBRental {
     this.created_date = created_date;
   }
 
-  public Date getUpdate_date() {
-    return update_date;
+  public Date getUpdated_date() {
+    return updated_date;
   }
 
-  public void setUpdate_date(Date update_date) {
-    this.update_date = update_date;
+  public void setUpdated_date(Date update_date) {
+    this.updated_date = updated_date;
   }
 }

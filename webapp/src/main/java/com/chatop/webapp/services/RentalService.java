@@ -10,21 +10,21 @@ import java.util.Optional;
 @Service
 public class RentalService {
   @Autowired
-  private static RentalRepository rentalRepository;
+  private RentalRepository rentalRepository;
 
   public Iterable<DBRental> getAllRentals() {
     return rentalRepository.findAll();
   }
 
-  public static Optional<DBRental> getRental(final Long id) {
+  public Optional<DBRental> getRental(int id) {
     return rentalRepository.findById(id);
   }
 
-  public static DBRental saveRental(final DBRental rental) {
+  public DBRental saveRental(DBRental rental) {
     return rentalRepository.save(rental);
   }
 
-  public static void deleteRental(final Long id) {
+  public void deleteRental(int id) {
     rentalRepository.deleteById(id);
   }
 }
