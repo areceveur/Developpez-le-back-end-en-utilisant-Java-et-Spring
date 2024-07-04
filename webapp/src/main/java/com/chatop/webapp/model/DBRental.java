@@ -1,13 +1,15 @@
 package com.chatop.webapp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
+@Setter
+@Getter
 @Entity
+@Table(name = "RENTALS")
 public class DBRental {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,79 +19,7 @@ public class DBRental {
   private int price;
   private String picture;
   private String description;
-  private int id_owner;
+  private int owner_id;
   private Date created_date;
   private Date updated_date;
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public int getSurface() {
-    return surface;
-  }
-
-  public void setSurface(int surface) {
-    this.surface = surface;
-  }
-
-  public int getPrice() {
-    return price;
-  }
-
-  public void setPrice(int price) {
-    this.price = price;
-  }
-
-  public String getPicture() {
-    return picture;
-  }
-
-  public void setPicture(String picture) {
-    this.picture = picture;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public int getId_owner() {
-    return id_owner;
-  }
-
-  public void setId_owner(int id_owner) {
-    this.id_owner = id_owner;
-  }
-
-  public Date getCreated_date() {
-    return created_date;
-  }
-
-  public void setCreated_date(Date created_date) {
-    this.created_date = created_date;
-  }
-
-  public Date getUpdated_date() {
-    return updated_date;
-  }
-
-  public void setUpdated_date(Date update_date) {
-    this.updated_date = updated_date;
-  }
 }

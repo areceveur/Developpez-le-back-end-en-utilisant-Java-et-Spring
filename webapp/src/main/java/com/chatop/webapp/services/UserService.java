@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.OptionalLong;
 
 @Data
 @Service
 public class UserService {
+
   @Autowired
   private UserRepository userRepository;
 
@@ -24,5 +26,9 @@ public class UserService {
 
   public void deleteUser(final int id) {
     userRepository.deleteById(id);
+  }
+
+  public Optional<DBUser> getUserByEmail(final String email) {
+    return userRepository.findByEmail(email);
   }
 }

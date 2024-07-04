@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/user.interface';
 import { SessionService } from 'src/app/services/session.service';
 import { AuthSuccess } from '../../interfaces/authSuccess.interface';
-import { LoginRequest } from '../../interfaces/loginRequest.interface'; 
+import { LoginRequest } from '../../interfaces/loginRequest.interface';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -21,8 +21,8 @@ export class LoginComponent  {
     password: ['', [Validators.required, Validators.min(3)]]
   });
 
-  constructor(private authService: AuthService, 
-    private fb: FormBuilder, 
+  constructor(private authService: AuthService,
+    private fb: FormBuilder,
     private router: Router,
     private sessionService: SessionService) { }
 
@@ -33,11 +33,16 @@ export class LoginComponent  {
         localStorage.setItem('token', response.token);
         this.authService.me().subscribe((user: User) => {
           this.sessionService.logIn(user);
-          this.router.navigate(['/rentals'])
-        });
-        this.router.navigate(['/rentals'])
+          this.router.navigate(['/rentals/all'])
+        },
+          error => {
+            console.error('Erreur lors de la récupération des informations utilisateur :', error);});
+        this.router.navigate(['/rentals/all'])
       },
-      error => this.onError = true
+      error => {
+        console.error('Erreur de connexion :', error);
+        this.onError = true
+      }
     );
   }
 }

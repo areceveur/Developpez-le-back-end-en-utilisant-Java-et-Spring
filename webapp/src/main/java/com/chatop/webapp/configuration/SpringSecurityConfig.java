@@ -34,12 +34,11 @@ public class SpringSecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http.csrf(AbstractHttpConfigurer::disable)
+      .cors(Customizer.withDefaults())
       .sessionManagement(session ->
         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth -> {
-        auth.requestMatchers("/register", "/login").permitAll();
-        auth.requestMatchers("/admin").hasRole("admin");
-        auth.requestMatchers("/user").hasRole("user");
+        auth.requestMatchers("/api/auth/register", "/api/auth/login").permitAll();
         auth.anyRequest().authenticated();
       })
       .formLogin(Customizer.withDefaults())

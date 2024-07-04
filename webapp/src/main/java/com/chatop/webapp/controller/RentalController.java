@@ -11,28 +11,33 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/rentals")
 public class RentalController {
+  private final RentalService rentalService;
+
   @Autowired
-  private RentalService rentalService;
+  public RentalController(RentalService rentalService) {
+    this.rentalService = rentalService;
+  }
 
   // récupère tous les rentals
-  @GetMapping("/allRentals")
+  @GetMapping("/all")
   public Iterable<DBRental> getAllRentals() {
     return rentalService.getAllRentals();
   }
 
   // récupère une location en particulier
-  @GetMapping("/oneRental/{id}")
+  @GetMapping("/detail/{id}")
   public DBRental getRental(@PathVariable("id") final int id) {
     Optional<DBRental> dbRental = rentalService.getRental(id);
     return dbRental.orElse(null);
   }
 
-  @PostMapping("/createRental")
+  @PostMapping("/create")
   public DBRental createRental(@RequestBody final DBRental dbRental) {
     return rentalService.saveRental(dbRental);
   }
 
-  @PostMapping("/oneRental/{id}")
+  // Update la location en particulier
+  @PutMapping("/detail/{id}")
   public DBRental updateRental(@PathVariable("id") final int id, @RequestBody final DBRental dbRental) {
     Optional<DBRental> r = rentalService.getRental(id);
     if(r.isPresent()) {
@@ -63,9 +68,9 @@ public class RentalController {
         currentRental.setDescription(description);
       }
 
-      int id_owner = dbRental.getId_owner();
-      if(id_owner != 0) {
-        currentRental.setId_owner(id_owner);
+      int owner_id = dbRental.getOwner_id();
+      if(owner_id != 0) {
+        currentRental.setOwner_id(owner_id);
       }
 
       Date created_date = dbRental.getCreated_date();
@@ -85,7 +90,7 @@ public class RentalController {
   }
 
   // Suppression du rental
-  @DeleteMapping("/oneRental/{id}")
+  @DeleteMapping("/detail/{id}")
   public void deleteRental(@PathVariable("id") final int id) {
     rentalService.deleteRental(id);
   }
