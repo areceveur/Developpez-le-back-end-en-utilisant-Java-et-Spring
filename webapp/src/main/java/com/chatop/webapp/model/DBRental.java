@@ -15,11 +15,11 @@ public class DBRental {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
   private String name;
-  private int surface;
-  private int price;
+  private double surface;
+  private double price;
   private String picture;
   private String description;
   private int owner_id;
-  private Date created_date;
-  private Date updated_date;
+  private Date created_at;
+  private Date updated_at;
 }

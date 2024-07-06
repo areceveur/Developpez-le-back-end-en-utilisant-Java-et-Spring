@@ -30,8 +30,10 @@ public class AuthController {
   }
 
   @PostMapping("/register")
-  public DBUser register(@RequestBody DBUser dbUser) {
-    return userService.saveUser(dbUser);
+  public ResponseEntity<TokenResponse> register(@RequestBody DBUser dbUser) {
+    DBUser savedUser =  userService.saveUser(dbUser);
+    String token = jwtService.generateToken(new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword()));
+    return ResponseEntity.ok(new TokenResponse(token));
   }
 
   @PostMapping("/login")

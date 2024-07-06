@@ -3,9 +3,11 @@ package com.chatop.webapp.controller;
 import com.chatop.webapp.model.DBRental;
 import com.chatop.webapp.services.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -20,8 +22,9 @@ public class RentalController {
 
   // récupère tous les rentals
   @GetMapping("/all")
-  public Iterable<DBRental> getAllRentals() {
-    return rentalService.getAllRentals();
+  public ResponseEntity<List<DBRental>> getAllRentals() {
+    List<DBRental> rentals = rentalService.getAllRentals();
+    return ResponseEntity.ok(rentals);
   }
 
   // récupère une location en particulier
@@ -48,12 +51,12 @@ public class RentalController {
         currentRental.setName(name);
       }
 
-      int surface = dbRental.getSurface();
+      double surface = dbRental.getSurface();
       if(surface != 0) {
         currentRental.setSurface(surface);
       }
 
-      int price = dbRental.getPrice();
+      double price = dbRental.getPrice();
       if(price != 0) {
         currentRental.setPrice(price);
       }
@@ -73,14 +76,14 @@ public class RentalController {
         currentRental.setOwner_id(owner_id);
       }
 
-      Date created_date = dbRental.getCreated_date();
+      Date created_date = dbRental.getCreated_at();
       if(created_date != null) {
-        currentRental.setCreated_date(created_date);
+        currentRental.setCreated_at(created_date);
       }
 
-      Date updated_date = dbRental.getUpdated_date();
+      Date updated_date = dbRental.getUpdated_at();
       if(updated_date != null) {
-        currentRental.setUpdated_date(updated_date);
+        currentRental.setUpdated_at(updated_date);
       }
       rentalService.saveRental(currentRental);
       return currentRental;

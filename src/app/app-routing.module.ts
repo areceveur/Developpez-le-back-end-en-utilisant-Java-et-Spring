@@ -18,7 +18,7 @@ const routes: Routes = [
   },
   {
     path: 'me',
-    canActivate: [AuthGuard], 
+    canActivate: [AuthGuard],
     component: MeComponent
   },
   { path: '404', component: NotFoundComponent },

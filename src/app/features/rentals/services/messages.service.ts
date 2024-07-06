@@ -15,5 +15,5 @@ export class MessagesService {
 
   public send(messageRequest: MessageRequest): Observable<MessageResponse> {
     return this.httpClient.post<MessageResponse>(this.pathService, messageRequest);
-  } 
+  }
   }
