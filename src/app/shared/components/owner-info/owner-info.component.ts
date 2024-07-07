@@ -12,7 +12,7 @@ export class OwnerInfoComponent implements OnChanges {
   @Input()
   public ownerId!: number;
 
-  public name: string | null = null;
+  public username: string | null = null;
 
   constructor(private userService: UserService) {
   }
@@ -21,7 +21,7 @@ export class OwnerInfoComponent implements OnChanges {
     if (changes['ownerId'].currentValue !== changes['ownerId'].previousValue) {
       this.userService
         .getUserById(changes['ownerId'].currentValue)
-        .subscribe((user: User) => this.name = user.username);
+        .subscribe((user: User) => this.username = user.username);
     }
 
 
