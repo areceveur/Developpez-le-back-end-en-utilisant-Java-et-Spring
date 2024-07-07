@@ -32,6 +32,7 @@ public class AuthController {
   @PostMapping("/register")
   public ResponseEntity<TokenResponse> register(@RequestBody DBUser dbUser) {
     DBUser savedUser =  userService.saveUser(dbUser);
+    System.out.println("Received user data: " + dbUser.getEmail() + ", " + dbUser.getUsername() + ", " + dbUser.getPassword());
     String token = jwtService.generateToken(new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword()));
     return ResponseEntity.ok(new TokenResponse(token));
   }
