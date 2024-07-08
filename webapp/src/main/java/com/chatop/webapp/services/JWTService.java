@@ -17,8 +17,6 @@ public class JWTService {
   private final JwtEncoder jwtEncoder;
   private final JwtDecoder jwtDecoder;
 
-  private final String jwtKey = "q2RtgQCxZ4E7Iz++7/eYm3ew5nyAHFPD72jekQXKuqS0Lj+zoHMdcdhwwlxn2BHJ";
-
   @Autowired
   public JWTService(JwtEncoder jwtEncoder, @Qualifier("jwtDecoder") JwtDecoder jwtDecoder) {
     this.jwtEncoder = jwtEncoder;

@@ -6,13 +6,14 @@ import { AuthSuccess  } from '../interfaces/authSuccess.interface';
 import { RegisterRequest } from '../interfaces/registerRequest.interface';
 import { User } from 'src/app/interfaces/user.interface';
 import {TokenResponse} from "../../../interfaces/TokenReponse.interface";
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private pathService = 'http://localhost:8080/api/auth';
+  private pathService = `${environment.baseUrl}`;
 
   constructor(private httpClient: HttpClient) { }
 

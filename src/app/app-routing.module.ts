@@ -7,7 +7,7 @@ import { UnauthGuard } from './guards/unauth.guard';
 
 const routes: Routes = [
   {
-    path: 'api/rentals/all',
+    path: 'rentals',
     canActivate: [AuthGuard],
     loadChildren: () => import('./features/rentals/rentals.module').then(m => m.RentalsModule)
   },
@@ -17,7 +17,7 @@ const routes: Routes = [
     loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)
   },
   {
-    path: 'api/auth/me',
+    path: 'me',
     canActivate: [AuthGuard],
     component: MeComponent
   },

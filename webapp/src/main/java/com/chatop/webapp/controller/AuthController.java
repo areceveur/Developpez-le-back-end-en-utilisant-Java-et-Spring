@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping
 public class AuthController {
   private final UserService userService;
   private final JWTService jwtService;

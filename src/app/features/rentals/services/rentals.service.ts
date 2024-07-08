@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {Observable, tap} from 'rxjs';
+import {catchError, Observable, of, tap, throwError} from 'rxjs';
 import { Rental } from 'src/app/features/rentals/interfaces/rental.interface';
 import { RentalResponse } from '../interfaces/api/rentalResponse.interface';
 import { RentalsResponse } from '../interfaces/api/rentalsResponse.interface';
@@ -12,13 +12,16 @@ import {environment} from "../../../../environments/environment";
 })
 export class RentalsService {
 
-  private pathService = `${environment.baseUrl}/api/rentals`;
+  private pathService = `${environment.baseUrl}`;
 
   constructor(private httpClient: HttpClient) { }
 
   public all(): Observable<RentalsResponse> {
-    return this.httpClient.get<RentalsResponse>(`${this.pathService}/all`).pipe(
-      tap(response => console.log('Rentals fetched:', response))
+    return this.httpClient.get<RentalsResponse>(`${this.pathService}/rentals`).pipe(
+      catchError(error => {
+        console.error('Error fetching rentals:', error);
+        return throwError(null);
+      })
     );
   }
 

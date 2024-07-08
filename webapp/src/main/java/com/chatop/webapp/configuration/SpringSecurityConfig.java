@@ -38,7 +38,7 @@ public class SpringSecurityConfig {
       .sessionManagement(session ->
         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth -> {
-        auth.requestMatchers("/api/auth/register", "/api/auth/login").permitAll();
+        auth.requestMatchers("/register", "/login").permitAll();
         auth.anyRequest().authenticated();
       })
       .formLogin(Customizer.withDefaults())

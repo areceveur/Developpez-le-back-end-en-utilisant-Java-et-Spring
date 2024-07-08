@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/rentals")
+@RequestMapping
 public class RentalController {
   private final RentalService rentalService;
 
@@ -21,7 +21,7 @@ public class RentalController {
   }
 
   // récupère tous les rentals
-  @GetMapping("/all")
+  @GetMapping("/rentals")
   public ResponseEntity<List<DBRental>> getAllRentals() {
     List<DBRental> rentals = rentalService.getAllRentals();
     return ResponseEntity.ok(rentals);
@@ -40,7 +40,7 @@ public class RentalController {
   }
 
   // Update la location en particulier
-  @PutMapping("/detail/{id}")
+  @PutMapping("/update/{id}")
   public DBRental updateRental(@PathVariable("id") final int id, @RequestBody final DBRental dbRental) {
     Optional<DBRental> r = rentalService.getRental(id);
     if(r.isPresent()) {

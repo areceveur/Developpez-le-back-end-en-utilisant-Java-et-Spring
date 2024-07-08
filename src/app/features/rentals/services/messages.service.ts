@@ -9,7 +9,7 @@ import { MessageResponse } from '../interfaces/api/messageResponse.interface';
 })
 export class MessagesService {
 
-  private pathService = 'api/messages';
+  private pathService = 'messages';
 
   constructor(private httpClient: HttpClient) { }
 
