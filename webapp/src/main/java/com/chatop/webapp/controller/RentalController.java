@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api/rentals")
 public class RentalController {
   private final RentalService rentalService;
 
@@ -21,7 +21,7 @@ public class RentalController {
   }
 
   // récupère tous les rentals
-  @GetMapping("/rentals")
+  @GetMapping("/all")
   public ResponseEntity<List<DBRental>> getAllRentals() {
     List<DBRental> rentals = rentalService.getAllRentals();
     return ResponseEntity.ok(rentals);

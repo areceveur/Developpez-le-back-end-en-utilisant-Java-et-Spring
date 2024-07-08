@@ -12,12 +12,12 @@ import {environment} from "../../../../environments/environment";
 })
 export class RentalsService {
 
-  private pathService = `${environment.baseUrl}`;
+  private pathService = `${environment.baseUrl}/api/rentals`;
 
   constructor(private httpClient: HttpClient) { }
 
   public all(): Observable<RentalsResponse> {
-    return this.httpClient.get<RentalsResponse>(`${this.pathService}/rentals`).pipe(
+    return this.httpClient.get<RentalsResponse>(`${this.pathService}/all`).pipe(
       catchError(error => {
         console.error('Error fetching rentals:', error);
         return throwError(null);
