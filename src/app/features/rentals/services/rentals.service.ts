@@ -29,6 +29,6 @@ export class RentalsService {
   }
 
   public update(id: string, form: FormData): Observable<RentalResponse> {
-    return this.httpClient.put<RentalResponse>(`${this.pathService}/detail/${id}`, form);
+    return this.httpClient.put<RentalResponse>(`${this.pathService}/update/${id}`, form);
   }
 }

@@ -33,11 +33,11 @@ export class LoginComponent  {
         localStorage.setItem('token', response.token);
         this.authService.me().subscribe((user: User) => {
           this.sessionService.logIn(user);
-          this.router.navigate(['/rentals/all'])
+          this.router.navigate(['/api/rentals/all'])
         },
           error => {
             console.error('Erreur lors de la récupération des informations utilisateur :', error);});
-        this.router.navigate(['/rentals/all'])
+        this.router.navigate(['/api/rentals/all'])
       },
       error => {
         console.error('Erreur de connexion :', error);
