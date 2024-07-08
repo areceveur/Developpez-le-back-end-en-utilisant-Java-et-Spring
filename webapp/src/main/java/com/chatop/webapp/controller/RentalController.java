@@ -23,8 +23,8 @@ public class RentalController {
   // récupère tous les rentals
   @GetMapping("/all")
   public ResponseEntity<List<DBRental>> getAllRentals() {
-    List<DBRental> rentals = rentalService.getAllRentals();
-    return ResponseEntity.ok(rentals);
+    Iterable<DBRental> rentals = rentalService.getAllRentals();
+    return ResponseEntity.ok((List<DBRental>) rentals);
   }
 
   // récupère une location en particulier

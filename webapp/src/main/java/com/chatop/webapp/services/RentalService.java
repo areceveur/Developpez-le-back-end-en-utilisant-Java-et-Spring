@@ -13,7 +13,7 @@ public class RentalService {
   @Autowired
   private RentalRepository rentalRepository;
 
-  public List<DBRental> getAllRentals() {
+  public Iterable<DBRental> getAllRentals() {
     return rentalRepository.findAll();
   }
 
