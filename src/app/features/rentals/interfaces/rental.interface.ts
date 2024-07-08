@@ -1,6 +1,6 @@
 export interface Rental {
 	id: number,
-	name: string,
+	username: string,
 	surface: number,
 	price: number,
 	picture: string,

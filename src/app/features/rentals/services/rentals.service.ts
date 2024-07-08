@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {Observable, tap} from 'rxjs';
 import { Rental } from 'src/app/features/rentals/interfaces/rental.interface';
 import { RentalResponse } from '../interfaces/api/rentalResponse.interface';
 import { RentalsResponse } from '../interfaces/api/rentalsResponse.interface';
@@ -17,7 +17,9 @@ export class RentalsService {
   constructor(private httpClient: HttpClient) { }
 
   public all(): Observable<RentalsResponse> {
-    return this.httpClient.get<RentalsResponse>(`${this.pathService}/all`);
+    return this.httpClient.get<RentalsResponse>(`${this.pathService}/all`).pipe(
+      tap(response => console.log('Rentals fetched:', response))
+    );
   }
 
   public detail(id: string): Observable<Rental> {

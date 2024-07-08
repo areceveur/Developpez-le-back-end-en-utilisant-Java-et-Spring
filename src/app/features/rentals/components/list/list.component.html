@@ -10,7 +10,7 @@
         <div class="items mt2" fxLayout="row" fxLayout.lt-md="column">
             <mat-card class="item" *ngFor="let rental of (rentals$ | async)?.rentals" fxFlex>
                 <mat-card-header>
-                    <mat-card-title>{{ rental.name }}</mat-card-title>
+                    <mat-card-title>{{ rental.username }}</mat-card-title>
                     <mat-card-subtitle>
                         <app-owner-info [ownerId]="rental.owner_id"></app-owner-info>
                     </mat-card-subtitle>

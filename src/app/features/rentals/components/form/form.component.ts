@@ -70,7 +70,7 @@ export class FormComponent implements OnInit {
       this.router.navigate(['/api/rentals']);
     }
     this.rentalForm = this.fb.group({
-      name: [rental ? rental.name : '', [Validators.required]],
+      name: [rental ? rental.username : '', [Validators.required]],
       surface: [rental ? rental.surface : '', [Validators.required]],
       price: [rental ? rental.price : '', [Validators.required]],
       description: [rental ? rental.description : '', [Validators.required]],
