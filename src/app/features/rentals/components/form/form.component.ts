@@ -67,7 +67,7 @@ export class FormComponent implements OnInit {
     console.log(rental);
     console.log(this.sessionService.user!.id);
     if( (rental !== undefined) && (rental?.owner_id !== this.sessionService.user!.id)) {
-      this.router.navigate(['/rentals']);
+      this.router.navigate(['rentals']);
     }
     this.rentalForm = this.fb.group({
       name: [rental ? rental.username : '', [Validators.required]],
