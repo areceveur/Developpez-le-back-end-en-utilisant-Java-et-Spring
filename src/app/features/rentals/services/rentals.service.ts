@@ -12,17 +12,13 @@ import {environment} from "../../../../environments/environment";
 })
 export class RentalsService {
 
-  private pathService = `${environment.baseUrl}/api/rentals`;
+  private pathService = 'api/rentals';
 
   constructor(private httpClient: HttpClient) { }
 
   public all(): Observable<RentalsResponse> {
-    return this.httpClient.get<RentalsResponse>(`${this.pathService}/all`).pipe(
-      catchError(error => {
-        console.error('Error fetching rentals:', error);
-        return throwError(null);
-      })
-    );
+    console.log('Fetching rentals from:', `${this.pathService}`);
+    return this.httpClient.get<RentalsResponse>(`${this.pathService}`);
   }
 
   public detail(id: string): Observable<Rental> {

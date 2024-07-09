@@ -6,10 +6,10 @@ import { ListComponent } from './components/list/list.component';
 
 
 const routes: Routes = [
-  { title: 'Rentals', path: 'rentals/all', component: ListComponent },
-  { title: 'Rentals - detail', path: 'rentals/detail/:id', component: DetailComponent },
-  { title: 'Rentals - update', path: 'rentals/update/:id', component: FormComponent },
-  { title: 'Rentals - create', path: 'rentals/create', component: FormComponent },
+  { title: 'Rentals', path: '', component: ListComponent },
+  { title: 'Rentals - detail', path: 'detail/:id', component: DetailComponent },
+  { title: 'Rentals - update', path: 'update/:id', component: FormComponent },
+  { title: 'Rentals - create', path: 'create', component: FormComponent },
 ];
 
 @NgModule({

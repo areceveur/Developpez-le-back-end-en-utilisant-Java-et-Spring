@@ -7,11 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/rentals")
+@RequestMapping("api/rentals")
 public class RentalController {
   private final RentalService rentalService;
 
@@ -21,10 +20,10 @@ public class RentalController {
   }
 
   // récupère tous les rentals
-  @GetMapping("/all")
-  public ResponseEntity<List<DBRental>> getAllRentals() {
+  @GetMapping
+  public ResponseEntity<Iterable<DBRental>> getAllRentals() {
     Iterable<DBRental> rentals = rentalService.getAllRentals();
-    return ResponseEntity.ok((List<DBRental>) rentals);
+    return ResponseEntity.ok(rentals);
   }
 
   // récupère une location en particulier

@@ -10,7 +10,7 @@ import {environment} from "../../environments/environment";
 })
 export class UserService {
 
-  private pathService = `${environment.baseUrl}/api/auth`;
+  private pathService = '/auth';
 
   constructor(private httpClient: HttpClient) { }
 

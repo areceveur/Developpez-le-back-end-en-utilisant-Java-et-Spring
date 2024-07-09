@@ -13,7 +13,7 @@ import {environment} from "../../../../environments/environment";
 })
 export class AuthService {
 
-  private pathService = `${environment.baseUrl}/api/auth`;
+  private pathService = '/api/auth';
 
   constructor(private httpClient: HttpClient) { }
 

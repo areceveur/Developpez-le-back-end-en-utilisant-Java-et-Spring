@@ -31,7 +31,7 @@ export class FormComponent implements OnInit {
 
   public ngOnInit(): void {
     const url = this.router.url;
-    if (url.includes('api/rentals/update')) {
+    if (url.includes('update')) {
       this.onUpdate = true;
       this.id = this.route.snapshot.paramMap.get('id')!;
       this.rentalsService
@@ -67,10 +67,10 @@ export class FormComponent implements OnInit {
     console.log(rental);
     console.log(this.sessionService.user!.id);
     if( (rental !== undefined) && (rental?.owner_id !== this.sessionService.user!.id)) {
-      this.router.navigate(['api/rentals/all']);
+      this.router.navigate(['/rentals']);
     }
     this.rentalForm = this.fb.group({
-      name: [rental ? rental.username : '', [Validators.required]],
+      name: [rental ? rental.name : '', [Validators.required]],
       surface: [rental ? rental.surface : '', [Validators.required]],
       price: [rental ? rental.price : '', [Validators.required]],
       description: [rental ? rental.description : '', [Validators.required]],
@@ -82,6 +82,6 @@ export class FormComponent implements OnInit {
 
   private exitPage(rentalResponse: RentalResponse): void {
     this.matSnackBar.open(rentalResponse.message, "Close", { duration: 3000 });
-    this.router.navigate(['api/rentals/all']);
+    this.router.navigate(['rentals']);
   }
 }
