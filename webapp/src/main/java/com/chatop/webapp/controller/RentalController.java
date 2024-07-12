@@ -2,21 +2,29 @@ package com.chatop.webapp.controller;
 
 import com.chatop.webapp.model.DBRental;
 import com.chatop.webapp.services.RentalService;
+import com.chatop.webapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("api/rentals")
 public class RentalController {
+
   private final RentalService rentalService;
+  private final UserService userService;
 
   @Autowired
-  public RentalController(RentalService rentalService) {
+  public RentalController(RentalService rentalService, UserService userService) {
     this.rentalService = rentalService;
+    this.userService = userService;
   }
 
   // récupère tous les rentals
@@ -29,66 +37,60 @@ public class RentalController {
   // récupère une location en particulier
   @GetMapping("/detail/{id}")
   public DBRental getRental(@PathVariable("id") final int id) {
-    Optional<DBRental> dbRental = rentalService.getRental(id);
-    return dbRental.orElse(null);
+    return rentalService.getRental(id);
   }
 
-  @PostMapping("/create")
-  public DBRental createRental(@RequestBody final DBRental dbRental) {
-    return rentalService.saveRental(dbRental);
+  @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<DBRental> createRental(
+    @RequestParam("name") String name,
+    @RequestParam("surface") int surface,
+    @RequestParam("price") double price,
+    @RequestParam("description") String description,
+    @RequestParam("picture") MultipartFile picture) throws IOException {
+
+    String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+    int ownerId = userService.findUserIdByEmail(currentUserEmail);
+
+
+    DBRental rental = new DBRental();
+    rental.setName(name);
+    rental.setSurface(surface);
+    rental.setPrice(price);
+    rental.setDescription(description);
+    rental.setOwner_id(ownerId);
+
+    if(!picture.isEmpty()) {
+      String picturePath = rentalService.savePicture(picture);
+      rental.setPicture(picturePath);
+    }
+
+    DBRental createdRental = rentalService.saveRental(rental);
+    return ResponseEntity.ok(createdRental);
   }
 
   // Update la location en particulier
-  @PutMapping("/update/{id}")
-  public DBRental updateRental(@PathVariable("id") final int id, @RequestBody final DBRental dbRental) {
-    Optional<DBRental> r = rentalService.getRental(id);
-    if(r.isPresent()) {
-      DBRental currentRental = r.get();
+  @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<DBRental> updateRental(
+    @PathVariable("id") final int id,
+    @RequestParam("name") String name,
+    @RequestParam("surface") int surface,
+    @RequestParam("price") double price,
+    @RequestParam("description") String description,
+    @RequestParam(value = "picture", required = false) MultipartFile picture) throws IOException {
 
-      String name = dbRental.getName();
-      if(name != null) {
-        currentRental.setName(name);
-      }
+    DBRental rental = rentalService.getRental(id);
+    rental.setName(name);
+    rental.setSurface(surface);
+    rental.setPrice(price);
+    rental.setDescription(description);
 
-      double surface = dbRental.getSurface();
-      if(surface != 0) {
-        currentRental.setSurface(surface);
-      }
-
-      double price = dbRental.getPrice();
-      if(price != 0) {
-        currentRental.setPrice(price);
-      }
-
-      String picture = dbRental.getPicture();
-      if(picture != null) {
-        currentRental.setPicture(picture);
-      }
-
-      String description = dbRental.getDescription();
-      if(description != null) {
-        currentRental.setDescription(description);
-      }
-
-      int owner_id = dbRental.getOwner_id();
-      if(owner_id != 0) {
-        currentRental.setOwner_id(owner_id);
-      }
-
-      Date created_date = dbRental.getCreated_at();
-      if(created_date != null) {
-        currentRental.setCreated_at(created_date);
-      }
-
-      Date updated_date = dbRental.getUpdated_at();
-      if(updated_date != null) {
-        currentRental.setUpdated_at(updated_date);
-      }
-      rentalService.saveRental(currentRental);
-      return currentRental;
-    } else {
-      return null;
+    if (picture != null && !picture.isEmpty()) {
+      String picturePath = rentalService.savePicture(picture);
+      rental.setPicture(picturePath);
     }
+
+    DBRental updatedRental = rentalService.updateRental(rental);
+    return ResponseEntity.ok(updatedRental);
   }
 
   // Suppression du rental
