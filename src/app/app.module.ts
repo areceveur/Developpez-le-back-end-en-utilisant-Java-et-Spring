@@ -30,7 +30,7 @@ const materialModule = [
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule, 
+    BrowserAnimationsModule,
     FlexLayoutModule,
     HttpClientModule,
     ...materialModule

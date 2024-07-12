@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -21,18 +21,20 @@ public class AuthController {
   private final UserService userService;
   private final JWTService jwtService;
   private final JwtDecoder jwtDecoder;
+  private BCryptPasswordEncoder bCryptPasswordEncoder;
 
   @Autowired
-  public AuthController(UserService userService, JWTService jwtService, JwtDecoder jwtDecoder) {
+  public AuthController(UserService userService, JWTService jwtService, JwtDecoder jwtDecoder, BCryptPasswordEncoder bCryptPasswordEncoder) {
     this.userService = userService;
     this.jwtService = jwtService;
     this.jwtDecoder = jwtDecoder;
+    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
   @PostMapping("/register")
   public ResponseEntity<TokenResponse> register(@RequestBody DBUser dbUser) {
+    dbUser.setPassword(bCryptPasswordEncoder.encode(dbUser.getPassword()));
     DBUser savedUser =  userService.saveUser(dbUser);
-    System.out.println("Received user data: " + dbUser.getEmail() + ", " + dbUser.getUsername() + ", " + dbUser.getPassword());
     String token = jwtService.generateToken(new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword()));
     return ResponseEntity.ok(new TokenResponse(token));
   }
@@ -40,7 +42,7 @@ public class AuthController {
   @PostMapping("/login")
   public ResponseEntity<TokenResponse> login(@RequestBody DBUser login) {
     Optional<DBUser> user = userService.getUserByEmail(login.getEmail());
-    if (user.isPresent() && user.get().getPassword().equals(login.getPassword())) {
+    if (user.isPresent() && bCryptPasswordEncoder.matches(login.getPassword(), user.get().getPassword())) {
       String token = jwtService.generateToken(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
       return ResponseEntity.ok(new TokenResponse(token));
     } else {
@@ -59,52 +61,5 @@ public class AuthController {
     } else {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
-  }
-
-  @PutMapping("/me/{id}")
-  public DBUser updateUser(@PathVariable("id") final int id, @RequestBody DBUser dbUser) {
-    Optional<DBUser> u = userService.getUser(id);
-    if (u.isPresent()) {
-      DBUser currentUser = u.get();
-
-      String email = dbUser.getEmail();
-      if(email != null) {
-        currentUser.setEmail(email);
-      }
-
-      String username = dbUser.getUsername();
-      if(username != null) {
-        currentUser.setUsername(username);
-      }
-
-      String password = dbUser.getPassword();
-      if(password != null) {
-        currentUser.setPassword(password);
-      }
-
-      Date created_at = dbUser.getCreated_at();
-      if(created_at != null) {
-        currentUser.setCreated_at(created_at);
-      }
-
-      Date updated_at = dbUser.getUpdated_at();
-      if(updated_at != null) {
-        currentUser.setUpdated_at(updated_at);
-      }
-
-      String role = dbUser.getRole();
-      if(role != null) {
-        currentUser.setRole(role);
-      }
-      userService.saveUser(currentUser);
-      return currentUser;
-    } else {
-      return null;
-    }
-  }
-
-  @DeleteMapping("/me/{id}")
-  public void deleteUser(@PathVariable("id") int id) {
-    userService.deleteUser(id);
   }
 }

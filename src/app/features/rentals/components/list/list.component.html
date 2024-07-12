@@ -26,11 +26,10 @@
                         <mat-icon>search</mat-icon>
                         <span class="ml1">Detail</span>
                     </button>
-                    <button *ngIf="rental.owner_id === user?.id" mat-raised-button color="primary"
-                        [routerLink]="['update',rental.id]">
+                    <button *ngIf="rental.owner_id === user?.id" mat-raised-button color="primary" [routerLink]="['update',rental.id]">
                         <mat-icon>edit</mat-icon>
                         <span class="ml1">Edit</span>
-                    </button>
+                     </button>
                 </mat-card-actions>
             </mat-card>
         </div>
