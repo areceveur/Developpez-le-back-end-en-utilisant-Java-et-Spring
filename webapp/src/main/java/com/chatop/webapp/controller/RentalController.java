@@ -3,6 +3,9 @@ package com.chatop.webapp.controller;
 import com.chatop.webapp.model.DBRental;
 import com.chatop.webapp.services.RentalService;
 import com.chatop.webapp.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/rentals")
@@ -29,6 +28,11 @@ public class RentalController {
     this.userService = userService;
   }
 
+  @Operation(summary = "Get all rentals")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Found the rentals"),
+    @ApiResponse(responseCode = "404", description = "Rentals not found")
+  })
   // récupère tous les rentals
   @GetMapping
   public ResponseEntity<Iterable<DBRental>> getAllRentals() {
@@ -36,12 +40,22 @@ public class RentalController {
     return ResponseEntity.ok(rentals);
   }
 
+  @Operation(summary = "Get one rental")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Found the rentals"),
+    @ApiResponse(responseCode = "404", description = "Rentals not found")
+  })
   // récupère une location en particulier
   @GetMapping("/detail/{id}")
   public DBRental getRental(@PathVariable("id") final int id) {
     return rentalService.getRental(id);
   }
 
+  @Operation(summary = "Create a new rental")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "201", description = "Rental created"),
+    @ApiResponse(responseCode = "400", description = "Invalid input")
+  })
   @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<DBRental> createRental(
     @RequestParam("name") String name,
@@ -70,6 +84,11 @@ public class RentalController {
     return ResponseEntity.ok(createdRental);
   }
 
+  @Operation(summary = "Update a rental")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Rental updated"),
+    @ApiResponse(responseCode = "404", description = "Rentals not found")
+  })
   // Update la location en particulier
   @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<DBRental> updateRental(
