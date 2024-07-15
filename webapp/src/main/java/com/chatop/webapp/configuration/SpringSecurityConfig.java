@@ -39,7 +39,7 @@ public class SpringSecurityConfig {
       .sessionManagement(session ->
         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth -> {
-        auth.requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/me").permitAll();
+        auth.requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/me", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll();
         auth.anyRequest().authenticated();
       })
       .formLogin(Customizer.withDefaults())
