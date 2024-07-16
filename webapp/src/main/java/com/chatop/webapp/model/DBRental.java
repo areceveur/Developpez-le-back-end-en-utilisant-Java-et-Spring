@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -20,6 +20,6 @@ public class DBRental {
   private String picture;
   private String description;
   private int owner_id;
-  private Date created_at;
-  private Date updated_at;
+  private LocalDateTime created_at;
+  private LocalDateTime updated_at;
 }

@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
@@ -42,6 +43,7 @@ public class AuthController {
   @PostMapping("/register")
   public ResponseEntity<TokenResponse> register(@RequestBody DBUser dbUser) {
     dbUser.setPassword(bCryptPasswordEncoder.encode(dbUser.getPassword()));
+    dbUser.setCreated_at(LocalDateTime.now());
     DBUser savedUser =  userService.saveUser(dbUser);
     String token = jwtService.generateToken(new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword()));
     return ResponseEntity.ok(new TokenResponse(token));

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("api/rentals")
@@ -104,6 +105,7 @@ public class RentalController {
     rental.setSurface(surface);
     rental.setPrice(price);
     rental.setDescription(description);
+    rental.setCreated_at(LocalDateTime.now());
 
     if (picture != null && !picture.isEmpty()) {
       String picturePath = rentalService.savePicture(picture);

@@ -5,23 +5,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
-@Setter
 @Getter
+@Setter
 @Entity
-@Table(name = "USERS")
-public class DBUser {
+@Table(name = "MESSAGES")
+public class DBMessage {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
-  private String email;
-  private String username;
-  private String password;
+  private int id;
+  private int rental_id;
+  private int user_id;
+  private String message;
   private LocalDateTime created_at;
   private LocalDateTime updated_at;
-  private String role;
-
 }
-
-
