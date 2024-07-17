@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+@PreAuthorize("isAuthenticated()")
 @RestController
 @RequestMapping("api/rentals")
 public class RentalController {
@@ -32,7 +34,6 @@ public class RentalController {
   @Operation(summary = "Get all rentals")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Found the rentals"),
-    @ApiResponse(responseCode = "404", description = "Rentals not found")
   })
   // récupère tous les rentals
   @GetMapping
@@ -43,8 +44,7 @@ public class RentalController {
 
   @Operation(summary = "Get one rental")
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "Found the rentals"),
-    @ApiResponse(responseCode = "404", description = "Rentals not found")
+    @ApiResponse(responseCode = "200", description = "Found the rentals")
   })
   // récupère une location en particulier
   @GetMapping("/detail/{id}")
@@ -54,8 +54,7 @@ public class RentalController {
 
   @Operation(summary = "Create a new rental")
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "201", description = "Rental created"),
-    @ApiResponse(responseCode = "400", description = "Invalid input")
+    @ApiResponse(responseCode = "201", description = "Rental created")
   })
   @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<DBRental> createRental(
@@ -87,8 +86,7 @@ public class RentalController {
 
   @Operation(summary = "Update a rental")
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "Rental updated"),
-    @ApiResponse(responseCode = "404", description = "Rentals not found")
+    @ApiResponse(responseCode = "200", description = "Rental updated")
   })
   // Update la location en particulier
   @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -116,6 +114,10 @@ public class RentalController {
     return ResponseEntity.ok(updatedRental);
   }
 
+  @Operation(summary = "Delete a rental")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Rental deleted")
+  })
   // Suppression du rental
   @DeleteMapping("/detail/{id}")
   public void deleteRental(@PathVariable("id") final int id) {

@@ -37,8 +37,7 @@ public class AuthController {
 
   @Operation(summary = "Registration of the user")
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "201", description = "Registration done"),
-    @ApiResponse(responseCode = "400", description = "Problem on the registration")
+    @ApiResponse(responseCode = "201", description = "Registration done")
   })
   @PostMapping("/register")
   public ResponseEntity<TokenResponse> register(@RequestBody DBUser dbUser) {
@@ -52,13 +51,13 @@ public class AuthController {
   @Operation(summary = "Login of the user")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "User logged"),
-    @ApiResponse(responseCode = "404", description = "Problem with the login")
   })
   @PostMapping("/login")
   public ResponseEntity<TokenResponse> login(@RequestBody DBUser login) {
     Optional<DBUser> user = userService.getUserByEmail(login.getEmail());
     if (user.isPresent() && bCryptPasswordEncoder.matches(login.getPassword(), user.get().getPassword())) {
       String token = jwtService.generateToken(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+      login.setUpdated_at(LocalDateTime.now());
       return ResponseEntity.ok(new TokenResponse(token));
     } else {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -67,8 +66,7 @@ public class AuthController {
 
   @Operation(summary = "Get the user")
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "Found the user"),
-    @ApiResponse(responseCode = "404", description = "User not found")
+    @ApiResponse(responseCode = "200", description = "Found the user")
   })
   @GetMapping("/me")
   public ResponseEntity<DBUser> me(@RequestHeader("Authorization") String authorizationHeader) {
