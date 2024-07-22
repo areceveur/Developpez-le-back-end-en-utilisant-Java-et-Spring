@@ -21,10 +21,8 @@ export class OwnerInfoComponent implements OnChanges {
     if (changes['ownerId'].currentValue !== changes['ownerId'].previousValue) {
       this.userService
         .getUserById(changes['ownerId'].currentValue)
-        .subscribe((user: User) => this.username = user.username);
+        //.subscribe((user: User) => this.username = user.username);
     }
-
-
 
   }
 }

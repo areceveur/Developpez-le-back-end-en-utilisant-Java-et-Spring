@@ -25,7 +25,7 @@ public class AuthController {
   private final UserService userService;
   private final JWTService jwtService;
   private final JwtDecoder jwtDecoder;
-  private BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
   @Autowired
   public AuthController(UserService userService, JWTService jwtService, JwtDecoder jwtDecoder, BCryptPasswordEncoder bCryptPasswordEncoder) {

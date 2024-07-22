@@ -30,14 +30,6 @@ export class AuthService {
     return this.httpClient.get<User>(`${this.pathService}/me`);
   }
 
-  public update(updatedUser: User | undefined): Observable<User> {
-    return this.httpClient.put<User>(`${this.pathService}/me`, updatedUser);
-  }
-
-  public delete(): Observable<void> {
-    return this.httpClient.delete<void>(`${this.pathService}/me`);
-  }
-
   public logout(): void {
     localStorage.removeItem('token');
   }

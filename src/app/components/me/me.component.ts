@@ -24,16 +24,4 @@ export class MeComponent implements OnInit {
   public back() {
     window.history.back();
   }
-
-  public updateUser() {
-    this.router.navigate(['/update-user']);
-  }
-
-  public deleteUser() {
-    this.authService.delete().subscribe(() => {
-      console.log("User deleted successfully");
-      this.authService.logout();
-      this.router.navigate(['/login'])
-    })
-  }
 }

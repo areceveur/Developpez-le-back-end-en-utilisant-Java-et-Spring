@@ -1,16 +1,50 @@
-# Estate
+# Project 3 : ChâTop - Seasonal rental portal
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.0.
+Welcome to the ChâTop project ! This portal is designed to put prospective tenants and homeowners in touch with each other
+for seasonal rentals on the Basque coast, and later throughout France.
 
-## Start the project
+## Description
 
-Git clone:
+ChâTop is a platform that enable users (renters and homeowners) to authenticate themselves and to have access to rental ads.
+Landlords can publish ads and tenants can look for rentals.
 
-> git clone https://github.com/OpenClassrooms-Student-Center/P3-Full-Stack-portail-locataire
+The application is implemented with to Angular for the front-end part and with Java for the back-end part,
+the pictures are stored on the server and their URL is saved in the database.
+
+## Installation
+
+### Prerequisite
+
+- Java 11 or 17
+- Spring Boot 3
+- MySQL
+- Node.js et npm (for the Angular project)
+
+###  Installation steps
+
+1. Clone the repository
+
+> git clone https://github.com/areceveur/Developpez-le-back-end-en-utilisant-Java-et-Spring.git
 
 Go inside folder:
 
-> cd P3-Full-Stack-portail-locataire
+> cd Developpez-le-back-end-en-utilisant-Java-et-Spring
+
+2. Creation of the database
+
+> CREATE DATABASE DBChatop;
+
+Update the file `application.properties` with the connexion information of the database.
+
+3. Creation of the tables
+
+Execute the script in the file `ressources/sql/script.sql`
+
+4. Launch the back-end
+
+Run the `WebappApplication` file
+
+5. Launch the front-end
 
 Install dependencies:
 
@@ -20,36 +54,17 @@ Launch Front-end:
 
 > npm run start;
 
+## Use
 
-## Ressources
+After the installation and the launch of the project, you can access to the Angular application with the address
+http://localhost:4200. You have to register first to have access to the rental ads or to create one.
 
-### Mockoon env
+## Security
 
-Download Mockoon here: https://mockoon.com/download/
+- Use of Spring Security and JWT to secure the routes
+- Encryption of the passwords in the database
 
-After installing you could load the environement
+## Documentation of the API
 
-> ressources/mockoon/rental-oc.json
-
-directly inside Mockoon 
-
-> File > Open environmement
-
-For launching the Mockoon server click on play bouton
-
-Mockoon documentation: https://mockoon.com/docs/latest/about/
-
-### Postman collection
-
-For Postman import the collection
-
-> ressources/postman/rental.postman_collection.json 
-
-by following the documentation: 
-
-https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#importing-data-into-postman
-
-
-### MySQL
-
-SQL script for creating the schema is available `ressources/sql/script.sql`
+The Swagger documentation of the API is available at the following URL after launch of the server SpringBoot:
+http://localhost:8080/swagger-ui/index.html#/

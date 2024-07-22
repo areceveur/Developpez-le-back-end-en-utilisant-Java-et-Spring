@@ -6,24 +6,29 @@ import com.chatop.webapp.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.core.io.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
-@PreAuthorize("isAuthenticated()")
 @RestController
 @RequestMapping("api/rentals")
 public class RentalController {
 
   private final RentalService rentalService;
   private final UserService userService;
+  private final Path fileStorageLocation = Paths.get("/Users/anne-elodiereceveur/Documents/formation_openclassrooms/projet3/Developpez-le-back-end-en-utilisant-Java-et-Spring/src/assets/images").toAbsolutePath().normalize();
+
 
   @Autowired
   public RentalController(RentalService rentalService, UserService userService) {
@@ -46,6 +51,7 @@ public class RentalController {
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Found the rentals")
   })
+
   // récupère une location en particulier
   @GetMapping("/detail/{id}")
   public DBRental getRental(@PathVariable("id") final int id) {
@@ -67,13 +73,13 @@ public class RentalController {
     String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
     int ownerId = userService.findUserIdByEmail(currentUserEmail);
 
-
     DBRental rental = new DBRental();
     rental.setName(name);
     rental.setSurface(surface);
     rental.setPrice(price);
     rental.setDescription(description);
     rental.setOwner_id(ownerId);
+    rental.setCreated_at(LocalDateTime.now());
 
     if(!picture.isEmpty()) {
       String picturePath = rentalService.savePicture(picture);
@@ -88,7 +94,8 @@ public class RentalController {
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Rental updated")
   })
-  // Update la location en particulier
+
+  // Update une location en particulier
   @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<DBRental> updateRental(
     @PathVariable("id") final int id,
@@ -103,7 +110,7 @@ public class RentalController {
     rental.setSurface(surface);
     rental.setPrice(price);
     rental.setDescription(description);
-    rental.setCreated_at(LocalDateTime.now());
+    rental.setUpdated_at(LocalDateTime.now());
 
     if (picture != null && !picture.isEmpty()) {
       String picturePath = rentalService.savePicture(picture);
@@ -114,10 +121,29 @@ public class RentalController {
     return ResponseEntity.ok(updatedRental);
   }
 
+  @Operation(summary = "Get the image")
+  @GetMapping("/images/{filename:.+}")
+  public ResponseEntity<Resource> getImage(@PathVariable String filename) {
+    try {
+      Path filePath = fileStorageLocation.resolve(filename).normalize();
+      System.out.println(filePath);
+      Resource resource = new UrlResource(filePath.toUri());
+      if (resource.exists() || resource.isReadable()) {
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+      } else {
+        System.err.println("Image not found: " + filePath);
+        throw new RuntimeException("Could not read the file");
+      }
+    } catch (MalformedURLException ex) {
+      throw new RuntimeException("Error: " + ex.getMessage());
+    }
+  }
+
   @Operation(summary = "Delete a rental")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Rental deleted")
   })
+
   // Suppression du rental
   @DeleteMapping("/detail/{id}")
   public void deleteRental(@PathVariable("id") final int id) {

@@ -23,10 +23,6 @@ public class UserService {
     return userRepository.findById(id);
   }
 
-  public void deleteUser(final int id) {
-    userRepository.deleteById(id);
-  }
-
   public Optional<DBUser> getUserByEmail(final String email) {
     return userRepository.findByEmail(email);
   }

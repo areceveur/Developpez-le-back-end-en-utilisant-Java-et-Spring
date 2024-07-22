@@ -2,7 +2,6 @@ package com.chatop.webapp.controller;
 
 import com.chatop.webapp.model.DBMessage;
 import com.chatop.webapp.services.MessageService;
-import com.chatop.webapp.services.RentalService;
 import com.chatop.webapp.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 @RestController
@@ -21,13 +19,11 @@ public class MessageController {
 
   private final MessageService messageService;
   private final UserService userService;
-  private final RentalService rentalService;
 
   @Autowired
-  public MessageController(MessageService messageService, UserService userService, RentalService rentalService) {
+  public MessageController(MessageService messageService, UserService userService) {
     this.messageService = messageService;
     this.userService = userService;
-    this.rentalService = rentalService;
   }
 
   @Operation(summary = "Receive a message")
@@ -45,7 +41,6 @@ public class MessageController {
     dbMessage.setCreated_at(LocalDateTime.now());
     dbMessage.setUpdated_at(LocalDateTime.now());
 
-    //DBMessage message = new DBMessage();
     DBMessage savedMessage = messageService.saveMessage(dbMessage);
     return ResponseEntity.ok(savedMessage);
   }

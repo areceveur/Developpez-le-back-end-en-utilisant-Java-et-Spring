@@ -1,7 +1,6 @@
 package com.chatop.webapp.configuration;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -28,9 +26,6 @@ import javax.crypto.spec.SecretKeySpec;
 public class SpringSecurityConfig {
 
   private final String jwtKey = "q2RtgQCxZ4E7Iz++7/eYm3ew5nyAHFPD72jekQXKuqS0Lj+zoHMdcdhwwlxn2BHJ";
-
-  @Autowired
-  private CustomUserDetailsService customUserDetailsService;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -56,11 +51,6 @@ public class SpringSecurityConfig {
   public JwtDecoder jwtDecoder() {
     SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length, "HmacSHA256");
     return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
-  }
-
-  @Bean
-  public UserDetailsService userDetailsService() {
-    return customUserDetailsService;
   }
 
   @Bean

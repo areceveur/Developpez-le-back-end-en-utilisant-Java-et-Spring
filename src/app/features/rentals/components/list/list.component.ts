@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import { User } from 'src/app/interfaces/user.interface';
 import { SessionService } from 'src/app/services/session.service';
 import { RentalsService } from '../../services/rentals.service';
-import {Rental} from "../../interfaces/rental.interface";
-import {tap} from "rxjs";
+import {Observable} from "rxjs";
+import {RentalsResponse} from "../../interfaces/api/rentalsResponse.interface";
 
 @Component({
   selector: 'app-list',
@@ -12,14 +12,20 @@ import {tap} from "rxjs";
 })
 export class ListComponent {
 
-  public rentals$ = this.rentalsService.all().pipe(
-    tap(rentals => console.log('Rentals: ', rentals))
-  );
+  public rentals$: Observable<RentalsResponse>;
 
   constructor(
     private sessionService: SessionService,
     private rentalsService: RentalsService
-  ) { }
+  ) {
+    this.rentals$ = this.rentalsService.all();
+    this.rentals$.subscribe((response) => {
+      console.log(response);
+      response.forEach(rental => {
+        console.log(rental.picture);
+      })
+    });
+  }
 
   get user(): User | undefined {
     return this.sessionService.user;
