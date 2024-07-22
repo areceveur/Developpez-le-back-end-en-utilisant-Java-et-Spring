@@ -51,7 +51,6 @@ public class RentalController {
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Found the rentals")
   })
-
   // récupère une location en particulier
   @GetMapping("/detail/{id}")
   public DBRental getRental(@PathVariable("id") final int id) {
@@ -81,7 +80,7 @@ public class RentalController {
     rental.setOwner_id(ownerId);
     rental.setCreated_at(LocalDateTime.now());
 
-    if(!picture.isEmpty()) {
+    if (!picture.isEmpty()) {
       String picturePath = rentalService.savePicture(picture);
       rental.setPicture(picturePath);
     }
@@ -137,16 +136,5 @@ public class RentalController {
     } catch (MalformedURLException ex) {
       throw new RuntimeException("Error: " + ex.getMessage());
     }
-  }
-
-  @Operation(summary = "Delete a rental")
-  @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "Rental deleted")
-  })
-
-  // Suppression du rental
-  @DeleteMapping("/detail/{id}")
-  public void deleteRental(@PathVariable("id") final int id) {
-    rentalService.deleteRental(id);
   }
 }

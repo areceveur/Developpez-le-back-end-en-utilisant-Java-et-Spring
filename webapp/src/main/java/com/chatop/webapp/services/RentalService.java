@@ -28,10 +28,6 @@ public class RentalService {
     return rentalRepository.save(rental);
   }
 
-  public void deleteRental(int id) {
-    rentalRepository.deleteById(id);
-  }
-
   public DBRental updateRental(DBRental rental) {
     return rentalRepository.save(rental);
   }

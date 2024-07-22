@@ -34,9 +34,7 @@ export class LoginComponent  {
         this.authService.me().subscribe((user: User) => {
           this.sessionService.logIn(user);
           this.router.navigate(['/rentals'])
-        },
-          error => {
-            console.error('Erreur lors de la récupération des informations utilisateur :', error);});
+        });
         this.router.navigate(['/rentals'])
       },
       error => {

@@ -52,12 +52,14 @@ Install dependencies:
 
 Launch Front-end:
 
-> npm run start;
+> npm run start
 
 ## Use
 
 After the installation and the launch of the project, you can access to the Angular application with the address
 http://localhost:4200. You have to register first to have access to the rental ads or to create one.
+To create an ad, click on the button `create` and complete the form.
+Careful, the chosen image has to be a small one (less than 1 Mo).
 
 ## Security
 

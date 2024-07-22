@@ -19,12 +19,6 @@ export class ListComponent {
     private rentalsService: RentalsService
   ) {
     this.rentals$ = this.rentalsService.all();
-    this.rentals$.subscribe((response) => {
-      console.log(response);
-      response.forEach(rental => {
-        console.log(rental.picture);
-      })
-    });
   }
 
   get user(): User | undefined {
