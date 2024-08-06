@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MessageRequest } from '../interfaces/api/messageRequest.interface';
@@ -14,6 +14,9 @@ export class MessagesService {
   constructor(private httpClient: HttpClient) { }
 
   public send(messageRequest: MessageRequest): Observable<MessageResponse> {
-    return this.httpClient.post<MessageResponse>(this.pathService, messageRequest);
+    const params = new HttpParams()
+      .set('message', messageRequest.message)
+      .set('rental', messageRequest.rental_id.toString());
+    return this.httpClient.post<MessageResponse>(this.pathService, null, { params: params });
   }
 }

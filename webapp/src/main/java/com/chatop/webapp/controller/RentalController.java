@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("api/rentals")
-@Tag(name = "Rentals", description = "Rental controller")
+//@Tag(name = "Rentals", description = "Rental controller")
 public class RentalController {
 
   private final RentalService rentalService;

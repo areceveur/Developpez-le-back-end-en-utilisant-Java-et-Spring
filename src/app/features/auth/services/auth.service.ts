@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LoginRequest } from '../interfaces/loginRequest.interface';
@@ -19,11 +19,19 @@ export class AuthService {
               private router: Router) { }
 
   public register(registerRequest: RegisterRequest): Observable<AuthSuccess> {
-    return this.httpClient.post<AuthSuccess>(`${this.pathService}/register`, registerRequest);
+    const params = new HttpParams()
+      .set('email', registerRequest.email)
+      .set('name', registerRequest.username)
+      .set('password', registerRequest.password);
+    return this.httpClient.post<AuthSuccess>(`${this.pathService}/register`, null, { params });
   }
 
   public login(loginRequest: LoginRequest): Observable<TokenResponse> {
-    return this.httpClient.post<TokenResponse>(`${this.pathService}/login`, loginRequest);
+    const params = new HttpParams()
+      .set('email', loginRequest.email)
+      .set('password', loginRequest.password);
+
+    return this.httpClient.post<TokenResponse>(`${this.pathService}/login`, null, { params });
   }
 
   public me(): Observable<User> {
