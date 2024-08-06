@@ -3,9 +3,11 @@ package com.chatop.webapp.controller;
 import com.chatop.webapp.model.DBRental;
 import com.chatop.webapp.services.RentalService;
 import com.chatop.webapp.services.UserService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
@@ -23,6 +25,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("api/rentals")
+@Tag(name = "Rentals", description = "Rental controller")
 public class RentalController {
 
   private final RentalService rentalService;
@@ -38,7 +41,7 @@ public class RentalController {
 
   @Operation(summary = "Get all rentals")
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "Found the rentals"),
+    @ApiResponse(responseCode = "200", description = "Found the rentals")
   })
   // récupère tous les rentals
   @GetMapping
@@ -59,7 +62,7 @@ public class RentalController {
 
   @Operation(summary = "Create a new rental")
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "201", description = "Rental created")
+    @ApiResponse(responseCode = "200", description = "Rental created")
   })
   @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<DBRental> createRental(
@@ -120,6 +123,7 @@ public class RentalController {
     return ResponseEntity.ok(updatedRental);
   }
 
+  @Hidden
   @Operation(summary = "Get the image")
   @GetMapping("/images/{filename:.+}")
   public ResponseEntity<Resource> getImage(@PathVariable String filename) {

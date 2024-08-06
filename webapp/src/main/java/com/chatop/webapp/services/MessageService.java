@@ -5,6 +5,8 @@ import com.chatop.webapp.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class MessageService {
   @Autowired
@@ -13,4 +15,9 @@ public class MessageService {
   public DBMessage saveMessage(DBMessage dbMessage) {
     return messageRepository.save(dbMessage);
   }
+
+  public Optional<DBMessage> getUser(final int id) {
+    return messageRepository.findById(id);
+  }
+
 }

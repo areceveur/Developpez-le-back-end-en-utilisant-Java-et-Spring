@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class DBUser {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+  private int id;
   private String email;
   private String username;
   private String password;
